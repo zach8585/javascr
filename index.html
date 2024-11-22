@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>moonbase sim</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moonbase sim</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>welcome to the moonbase</h1>
+        <p>this where you are in charge of the moonbase </p>
+    </header>
+
+    <main id ="game-area">
+
+    </main>
+
+    <script>
+        // We are not in javascript land! Notice our different syntax for the comments!
+        // Initialize game variables
+        let energy = 100; // This is the amount of energy we have
+        let food = 50; // This is the amount of food we have
+        let water = 50; // This is the amount of water we have
+        let population = 5; // This is the number of people in our moonbase
+        let dayCounter = 0; // This is the number of days that have passed
+     
+        // Function to produce energy
+        function produceEnergy(amount) {
+            // Increase energy by the specified amount
+            energy += amount;
+            // Update the display
+            updateDisplay();
+        }
+     
+        // Function to consume daily resources
+        function consumeResources() {
+            // Each person consumes 1 unit of food and 1 unit of water each day
+            food -= population;
+            water -= population;
+            // Ensure resources don't go below 0
+            food = Math.max(food, 0);
+            water = Math.max(water, 0);
+        }
+     
+        // Function to build a new module
+        function buildModule() {
+            // Check if we have enough energy to build a new module
+            if (energy >= 20) {
+                // Deduct the energy cost for building the module
+                energy -= 20;
+                // Increase population capacity
+                population += 5;
+                // Here the build module function is calling the Update the display
+                updateDisplay();
+            }
+        }
+     
+        // Function to update the display
+        function updateDisplay() {
+            // Create the HTML for the game status
+            const statusHTML = `
+                <h2>Moonbase Status - Day ${dayCounter}</h2>
+                <p>Energy: ${energy}</p>
+                <p>Food: ${food}</p>
+                <p>Water: ${water}</p>
+                <p>Population: ${population}</p>
+                <button onclick="simulateDay()">Simulate a Day</button>
+                <button onclick="produceEnergy(10)">Produce Energy (+10)</button>
+                <button onclick="buildModule()">Build Module (Cost: 20 Energy)</button>
+            `;
+            // Update the game area with the new status
+            document.getElementById('game-area').innerHTML = statusHTML;
+        }
+     
+        // Function to simulate a day in the moonbase
+        function simulateDay() {
+            // Increase the day counter
+            dayCounter++;
+            // Consume resources for the day
+            consumeResources();
+            // Randomly decide to build a new module (50% chance)
+            if (Math.random() > 0.5) {
+                buildModule();
+            }
+            // Update the display
+            updateDisplay();
+        }
+     
+        // Calling the update display function here to Initialize the game display
+        // Notice I am calling from the JavaScript function updateDisplay() from the JavaScript land inside the script tag.
+        // Rememeber functions do not run unless they are called.
+        updateDisplay();
+        </script>
+
+   
+    
+</body>
+</html>
